@@ -2,6 +2,7 @@ import pygame
 import math
 import random
 
+# initialize variables
 screen_width = 600
 screen_height = 800
 skwed_probabitity = [0.7, 0.1, 0.05, 0.08, 0.04, 0.02, 0.01, 0, 0]
@@ -50,6 +51,7 @@ index = range(len(color_order))
 random_int = random.choices(index, weights=skwed_probabitity, k=1)[0]
 next_ball_radius = radius_order[random_int]
 next_ball_color = color_order[random_int]
+
 while running:
     screen.fill(black)
     for event in pygame.event.get():
@@ -192,7 +194,7 @@ while running:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    # reset game when space is pressed
+                    # reset game when 'space' is pressed
                     balls.clear()
                     balls_to_add.clear()
                     balls_to_remove.clear()
