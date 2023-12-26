@@ -3,18 +3,22 @@ import math
 import random
 
 # initialize variables
+
+image_path = "img/mateo.png"  # to "replace" one ball by one image
+image = pygame.image.load(image_path)
+image_rect = image.get_rect()
 screen_width = 600
 screen_height = 800
 skwed_probabitity = [0.7, 0.1, 0.05, 0.08, 0.04, 0.02, 0.01, 0, 0]
 black = (0,0,0)
-white = (255,255,255)
-grey = (128,128,128)
-orange = (255,165,0)
-yellow = (255,255,0)
 green  = (0 , 255 , 0)
 blue = (0,0,255)
 thistle = (255, 0, 255)
 hot_pink = (255, 105, 180)
+white = (255,255,255)
+grey = (128,128,128)
+orange = (255,165,0)
+yellow = (255,255,0)
 purple = (128, 0, 128)
 color_order = [white, grey, orange, yellow, green, blue, thistle, hot_pink, purple]
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -30,17 +34,17 @@ purple_score = 128
 score = 0
 score_order = [white_score, grey_score, orange_score, yellow_score, green_score, blue_score, thistle_score, hot_pink_score, purple_score]
 ball_speed = 2
+blue_radius = 85
+thistle_radius = 94
+hot_pink_radius = 110
 white_radius = 15
 grey_radius = 22
 orange_radius = 42
 yellow_radius = 55
 green_radius = 68
-blue_radius = 85
-thistle_radius = 94
-hot_pink_radius = 110
 purple_radius = 130
 radius_order = [white_radius, grey_radius, orange_radius, yellow_radius, green_radius, blue_radius, thistle_radius, hot_pink_radius, purple_radius]
-gravity = 0.20
+gravity = 0.05
 balls = []
 balls_to_add = []
 balls_to_remove = []
@@ -74,12 +78,12 @@ while running:
             mouse_x = event.pos[0]
             mouse_y = event.pos[1]
             pygame.draw.circle(screen, next_ball_color, (mouse_x, mouse_y), next_ball_radius)
-            
+
     if not game_over:
         for i in range(len(balls)):
             for j in range(i+1, len(balls)):
-                dx = balls[i][0] - balls[j][0]
-                dy = balls[i][1] - balls[j][1]
+                dx = balls[i][0] - balls[j][0] # distance x = first element of ball i (dx)
+                dy = balls[i][1] - balls[j][1] # idem
                 distance = math.sqrt(dx **2 + dy **2)
                 if distance < balls[i][5] + balls[j][5]:
                     # check if the balls have same colors
@@ -104,15 +108,15 @@ while running:
                     else:
                         # check overlap of balls
                         overlap = balls[i][5] + balls[j][5] - distance
-                        dx = dx / distance
-                        dy = dy / distance
+                        dx /= distance
+                        dy /= distance
                         balls[i][0] += dx * overlap / 2
                         balls[i][1] += dy * overlap / 2
                         balls[j][0] -= dx * overlap / 2
                         balls[j][1] -= dy * overlap / 2
                         # update speed of both balls when they collide
-                        balls[i][2] = 0 
-                        balls[j][2] = 0
+                        balls[i][2] = 1.5 
+                        balls[j][2] = 1.5
                         balls[i][3] *= 1
                         balls[j][3] *= 1
                         # update the is_dropping flag
@@ -153,11 +157,15 @@ while running:
                 ball[0] = box_right - 1
                 ball[3] *= -0.5
             any_ball = pygame.draw.circle(screen, ball[4], (ball[0], ball[1]), ball[5])
-        # draw 3 lines to make a rectangle with upper side open
+            # image on the balls (commented because its near to working)
+            # image = pygame.transform.scale(image, (2 * balls[i-1][5], 2 * balls[i-1][5])) 
+            # screen.blit(image, (balls[i-1][0] - balls[i-1][5], balls[i-1][1] - balls[i-1][5]))
+
+        # rectangle of the "map"
         pygame.draw.line(screen, white, (40, 40), (40, 720), 1)
         pygame.draw.line(screen, white, (40, 720), (560, 720), 1)
         pygame.draw.line(screen, white, (560, 720), (560, 40), 1)
-        # draw a warning line at top of box with red dotted line
+        # redline (limit of the map)
         dotted_line_y = 40
         dotted_line_length = 6
         dotted_line_space = 5
@@ -177,6 +185,7 @@ while running:
         score_text = font.render(f'Score: {score}', True, white)
         screen.blit(score_text, (screen_width /2 - score_text.get_width()/2, 10))
         pygame.display.update()
+            
     if game_over:
         font = pygame.font.Font(None, 36)
         game_over_text_lines = [
