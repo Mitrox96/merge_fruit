@@ -59,7 +59,7 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.pos[0] > 40 and event.pos[0]<560 and event.pos[1]< 720:
-                # draw a ball when mouse is clicked in the totality of the rectangle
+                #draw a ball when mouse is clicked in the totality of the rectangle
                 ball_x = event.pos[0]
                 ball_y = 10
                 horizontal_speed = 0 
