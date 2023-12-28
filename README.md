@@ -1,4 +1,8 @@
 # merge_fruit
+Dorian GRONER
+Mateo LO PINTO
+Damien LOUBIOU
+CDA1
 
 Lancement du jeu : démarrer le programme
 But du jeu : fusionner des balles de même couleur pour faire le score le plus grand possible
